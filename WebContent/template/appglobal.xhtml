@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:view contentType="text/html">
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+		<title><ui:insert name="title">Financial Disclosure System</ui:insert></title>	
+		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+		<meta content="Washington Suburban Sanitary Commission" name="DC.Publisher" />		
+		<meta content="© Copyright WSSC. 2013, 2015" name="DC.Rights" />
+	</f:facet>
+	<h:outputStylesheet name="appcss.css" library="css" />
+</h:head>
+<h:body>
+	<ui:insert name="header" >
+		<ui:include src="/template/appHeader.xhtml" />
+	</ui:insert>
+	<div id="main" class="wrapper">
+		<ui:insert name="content" >
+			<ui:include src="/template/commonContent.xhtml" />
+		</ui:insert>
+	</div>
+	 <ui:insert name="footer" >
+		<ui:include src="/template/appFooter.xhtml" />
+	</ui:insert>	 
+</h:body>
+</f:view>
+</html>

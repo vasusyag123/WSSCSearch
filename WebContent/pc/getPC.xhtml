@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+		<title><h:outputText value="#{pcBean.title }"></h:outputText></title>
+		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+</f:facet>
+<h:outputScript library="js" name="common.js" />
+<h:outputStylesheet library="css" name="appcss.css"></h:outputStylesheet>
+</h:head>
+<h:body>
+<h:form id="pcForm"  styleClass="form">
+	<p:panelGrid id="openSessionErrorGrid" styleClass="panelGrid" rendered="#{pcBean.recordsAvailable == 0}" columns="1">
+	<f:facet name="header">
+          No Facility Drawings found in this search
+   		 </f:facet>
+		<ui:include flush="true" src="/Search/NotAvailable.html"  ></ui:include>
+	</p:panelGrid>
+	<p:panel id="panel1"  styleClass="panel"  style="background: #727272">
+	
+	</p:panel>
+	<p:dataTable paginator="true" styleClass="myTable" autoUpdate="true" paginatorPosition="bottom" rows="10" rendered="#{pcBean.recordsAvailable != 0}"
+				 id="tableEx1" value="#{pcBean.pcDocumentsList}" var="vardocumentsList">
+				 <f:facet name="header" align="center" >
+							<h1>Plumbing Cards Drawings</h1>
+						</f:facet>
+							<p:column id="columnEx1" style="width:20px;" rendered="#{pcBean.showButton}">
+								<f:facet name="header"  align="left" >
+									<h:selectBooleanCheckbox id="selectAllContracts"
+										styleClass="selectBooleanCheckbox" onclick="checkAndUncheckAll('pcForm', 'pcForm:tableEx1:selectAllContracts');"></h:selectBooleanCheckbox>
+								</f:facet>
+								<h:selectBooleanCheckbox id="selectContract"
+									styleClass="selectBooleanCheckbox" value="#{vardocumentsList.selected}" rendered="#{vardocumentsList.mimeType}"></h:selectBooleanCheckbox>
+							</p:column>
+						
+				
+					
+		
+		
+		
+		<p:column id="columnEx2" style="width:150px;">
+						<f:facet name="header">
+							<h:outputText id="documentTitleLbl" value="#{msgs.documentTitle}"></h:outputText>
+						</f:facet>
+						<h:commandLink id="tWSSCDocNameLnk" action="#{viewDocuments.onQueryPCDocumentClick}" rendered="#{vardocumentsList.mimeType}" ajax="false" target="_blank">
+							 <h:graphicImage styleClass="graphicImage" id="image1" value="/resources/images/search.png" border="0" alt="View1" title="View">
+                            </h:graphicImage>
+							<h:outputText id="title" value="#{vardocumentsList.documentTitle}"></h:outputText>
+							<f:param name="objectId" id="objectIdParam" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+						<h:commandLink  action="#{viewDocuments.onQueryPCDocumentClick}" rendered="#{!vardocumentsList.mimeType}" ajax="false" target="_blank">
+						<h:outputText id="documentTitle" value="#{vardocumentsList.documentTitle}"></h:outputText>
+						<f:param name="objectId" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+		</p:column>
+					
+        	
+					
+					<p:column id="columnEx3" style="width:250px;">
+						<f:facet name="header">
+							<h:outputText id="street" value="#{msgs.streetName}"></h:outputText>
+						</f:facet>
+						<h:outputText id="streetName" value="#{vardocumentsList.pStreetName}"></h:outputText>
+					</p:column>
+					
+						<p:column id="columnEx4" style="width:50px;">
+						<f:facet name="header">
+							<h:outputText id="House" value="#{msgs.houseNumber}"></h:outputText>
+						</f:facet>
+						<h:outputText id="houseNumber" value="#{vardocumentsList.pHouseNumber}"></h:outputText>
+					</p:column>
+					<p:column id="columnEx5" style="width:50px;">
+						<f:facet name="header">
+							<h:outputText id="permitNoLbl" value="#{msgs.permitNo}"></h:outputText>
+						</f:facet>
+						<h:outputText id="permitNumber" value="#{vardocumentsList.pPermitNo}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx6" style="width:50px;">
+						<f:facet name="header">
+							<h:outputText id="contractLbl" value="#{msgs.contractCode}"></h:outputText>
+						</f:facet>
+						<h:outputText id="contractCd" value="#{vardocumentsList.pContractNo}"></h:outputText>
+					</p:column>
+					
+					<!-- <p:column id="columnEx6">
+						<f:facet name="header">
+							<h:outputText id="contractLbl" value="#{msgs.contractCode}"></h:outputText>
+						</f:facet>
+						<h:commandLink id="displayDocumentLnk" action="#{viewDocuments.onQueryPCDocumentClick()}" rendered="#{vardocumentsList.mimeType}" ajax="false" target="_blank">
+							 <h:graphicImage styleClass="graphicImage" id="image6" value="/resources/images/search.png" border="0" alt="View1" title="View">
+                            </h:graphicImage>
+							<h:outputText id="contractCd" value="#{vardocumentsList.pContractNo}"></h:outputText>
+							<f:param name="objectId6" id="objectIdParam6" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+						<h:commandLink  action="#{viewDocuments.viewNonPrizmQueryPCDocument()}" rendered="#{!vardocumentsList.mimeType}" ajax="false" target="_blank">
+							<h:outputText value="#{vardocumentsList.pContractNo}"></h:outputText>
+							<f:param name="objectId6" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+					</p:column>
+					 -->
+					
+				
+					
+					
+					<p:column id="columnEx7" style="width:50px;">
+						<f:facet name="header">
+							<h:outputText id="cntCodeLbl" value="#{msgs.countyCd}"></h:outputText>
+						</f:facet>
+						<h:outputText id="countyCode" value="#{vardocumentsList.pCountyCd}"></h:outputText>
+					</p:column>
+					
+						<p:column id="columnEx8" style="width:50px;">
+						<f:facet name="header">
+							<h:outputText id="pageNumberLbl" value="#{msgs.pageNumber}"></h:outputText>
+						</f:facet>
+						<h:outputText id="pageNumber" value="#{vardocumentsList.pPgNo}"></h:outputText>
+					</p:column>
+				
+					
+					<p:column id="columnEx16">
+						<f:facet name="header">
+							<h:outputText id="commentLbl" value="#{msgs.comment}"></h:outputText>
+						</f:facet>
+						<h:outputText id="comment" value="#{vardocumentsList.pComment}"></h:outputText>
+					</p:column>
+						<f:facet name="footer">
+						<p:commandButton id="multiViewButton" value="View Drawings" icon="ui-icon-search" action="#{pcBean.showDocuments}" onclick="return checkForSelected('pcForm')"/>
+						<p:commandButton id="resetButton" value="#{msgs.reset}" icon="ui-icon-cancel" onclick="resetAll('pcForm');"/>
+					</f:facet>
+						
+					</p:dataTable>
+					<h:messages id="messages1" styleClass="messages"></h:messages>
+					
+</h:form>
+</h:body>
+</html>

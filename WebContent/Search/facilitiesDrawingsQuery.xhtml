@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<title>queryEngrDocListView</title>
+</h:head>
+<h:body>
+<h:form id="testform" styleClass="form">
+
+   
+
+<ui:param name="prizmFile" value="#{facesContext.externalContext.context.getAttribute('prizmurl') }"></ui:param>
+	<object id="PrizmViewer1" classid="CLSID:7A2633F0-33D5-4F5E-93BE-74ACBEE7F7EA"
+			height="100%" width="100%">
+		<param name="SRC" value="#{prizmFile}/FacilityDrawingsListFile.prizm"/>
+		<param name="InitialPageNumber" value="1"/>
+		<param name="type" value="application/x-prizm"/>
+		<param name="ArrangeDockingWindows" value="None,TOCWindow"/>
+		
+		<embed
+			src="#{prizmFile}/FacilityDrawingsListFile.prizm"
+			type = "application/x-prizm"
+        	height="100%" width="100%" InitialPageNumber="1" ArrangeDockingWindows ="None,TOCWindow">
+		</embed>
+	</object>
+	</h:form>
+</h:body>
+</html>

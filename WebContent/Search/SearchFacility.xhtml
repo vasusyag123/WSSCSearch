@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Search Facility</title>
+<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=7; IE=8; IE=9; IE=EDGE"/>
+		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+</f:facet>
+<h:outputScript library="js" name="common.js" />
+<h:outputStylesheet library="css" name="appcss.css"  />
+</h:head>
+<h:body>
+
+
+	<h:form id="qedForm" styleClass="form" prependId="false">
+		<p:messages id="messages" showDetail="true" severity="error,info"  rendered="#{!facesContext.validationFailed}"/>
+		<p:panel id="pnl" header="WSSC Facility Drawings Search" style="margin-bottom:10px;text-align: Center;" ></p:panel>
+		<p:panelGrid id="searchgrid" style="text-align: right ; margin-left: 30%;">   
+ 		
+ 			
+
+		<f:facet name="header">
+          Facility Drawing Search
+   		 </f:facet>
+<!-- 
+			<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="FacilityDrawingName" value="Facility Drawing Name :" for="facilityDrawingName"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value=""
+										id="facilityDrawingName" requiredMessage="Please enter valid Facility Drawing Name">
+					<p:tooltip for="facilityDrawingName" value="Please enter facility Drawing Name (Example: ACCKBE3452A02-E01)." showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid Facility Drawing Name." />
+					</p:inputText>
+					<p:message for="facilityDrawingName" styleClass="message" id="facilityDrawingNameMessage"></p:message>
+				</p:column>  
+        	</p:row>
+ -->
+			<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="FacilityName" value="Facility Name :" for="facilityName" ></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{documentsBean.uiFacilityName}"
+										id="facilityName" requiredMessage="Please enter valid Facility Name" style="width:250px">
+					<p:tooltip for="facilityName" value="Please enter facilityName (Example: Parkway). " showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid Facility Name." />
+					</p:inputText>
+					<p:message for="facilityName" styleClass="message" id="facilityNameMessage"></p:message>
+				</p:column>  
+        	</p:row>
+        	
+        	<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="ContractNumber" value="Contract Number :" for="contractNumber"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{documentsBean.uicontractNumber}"
+										id="contractNumber" requiredMessage="Please enter valid Contract Number" style="width:250px">
+					<p:tooltip for="contractNumber" value="Please enter Contract Number (Example: 02-3452A)." showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid Contract Number." />
+					</p:inputText>
+					<p:message for="contractNumber" styleClass="message" id="contractNumberMessage"></p:message>
+				</p:column>  
+        	</p:row>
+        	
+        	<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="ProjectName" value="Project Name :" for="projectName"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{documentsBean.uiProjectName}"
+										id="projectName" requiredMessage="Please enter valid Project Name" style="width:250px">
+					<p:tooltip for="projectName" value="Please enter Keyword (Example: Vault)." showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid Project Name." />
+					</p:inputText>
+					<p:message for="projectName" styleClass="message" id="projectNameMessage"></p:message>
+				</p:column>  
+        	</p:row>
+        	
+        		<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="SheetTitleLbl" value="Sheet Title :" for="sheetTitle"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{documentsBean.uiSheetTitle}"
+										id="sheetTitle" requiredMessage="Please enter valid Sheet Title" style="width:250px">
+					<p:tooltip for="sheetTitle" value="Please enter Keyword (Example: Vault)." showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid Sheet Title." />
+					</p:inputText>
+					<p:message for="sheetTitle" styleClass="message" id="sheetTitleMessage"></p:message>
+				</p:column>  
+        	</p:row>
+        	
+        	<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="DisciplineLbl" value="Discipline :" for="desciplineId"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		
+					
+						<p:selectOneMenu  id="desciplineId" value="#{documentsBean.uiDescipline}" style="width:260px;text-align:left;">
+									<f:selectItem itemValue="" itemLabel=""  />
+									<f:selectItem itemValue="X" itemLabel="ABANDONED  - X"/>
+								   	<f:selectItem itemValue="A" itemLabel="ARCHITECTURAL - A" />
+									<f:selectItem itemValue="C" itemLabel="CIVIL - C" /> 
+								   	<f:selectItem itemValue="Z" itemLabel="CONTRACTOR/SHOP DRAWINGS - Z" />
+								
+									<f:selectItem itemValue="XX" itemLabel="DEMOLITION - XX" /> 
+									<f:selectItem itemValue="E" itemLabel="ELECTRICAL - E" /> 
+									<f:selectItem itemValue="Q" itemLabel="EQUIPMENT - Q" /> 
+									<f:selectItem itemValue="F" itemLabel="FIRE  PROTECTION (ALARM SYSTEMS) - F" /> 
+									<f:selectItem itemValue="G" itemLabel="GENERAL - G" /> 
+									<f:selectItem itemValue="B" itemLabel="GEOTECHNICAL - B" /> 
+									
+									<f:selectItem itemValue="H" itemLabel="HAZARDOUS MATERIAL - H" /> 
+									<f:selectItem itemValue="T" itemLabel="INSTRUMENTATION/TELECOMMUNICATIONS - T" /> 
+									<f:selectItem itemValue="I" itemLabel="INTERIORS - I" /> 
+									<f:selectItem itemValue="L" itemLabel="LANDSCAPE - L" /> 
+									<f:selectItem itemValue="M" itemLabel="MECHANICAL - M" /> 
+									<f:selectItem itemValue="O" itemLabel="OPERATIONS - O" /> 
+									<f:selectItem itemValue="P" itemLabel="PLUMBING - P" /> 
+									<f:selectItem itemValue="D" itemLabel="PROCESS - D" /> 
+									<f:selectItem itemValue="R" itemLabel="RESOURCE - R" /> 
+									<f:selectItem itemValue="TY" itemLabel="SECURITY - TY" /> 
+									<f:selectItem itemValue="S" itemLabel="STRUCTURAL - S" /> 
+									<f:selectItem itemValue="V" itemLabel="SURVEY/MAPPING - V" /> 
+									<p:tooltip for="sheetTitle" value="Please select Descipline (Example: CIVIL - C)." showEffect="fade" hideEffect="fade"> </p:tooltip>						
+						</p:selectOneMenu>
+					
+					
+				</p:column>  
+        	</p:row>
+        	<!-- 
+        	<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="DrawingType" value="Drawing Type :" for="drawingType"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{documentsBean.uiDrawingType}"
+										id="drawingType" requiredMessage="Please enter valid Drawing Type" style="width:250px">
+					<p:tooltip for="drawingType" value="Please enter Drawing Type (Example: SEC)." showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid Project Name." />
+					</p:inputText>
+					<p:message for="drawingType" styleClass="message" id="drawingTypeMessage"></p:message>
+				</p:column>  
+        	</p:row>
+	                  -->
+			<p:row>
+				<p:column colspan="2">
+					<p:commandButton id="searchButton"  type="submit" value="Search" ajax="false" action="#{documentsBean.processEngineeringFacilitiesSearch}" icon="ui-icon-check"
+						style="margin:0" styleClass="commandButton">
+					<p:tooltip for="searchButton" value="Fetches all drawings matching above fields." showEffect="fade" hideEffect="fade" />
+					</p:commandButton>
+				</p:column>  
+				<p:column colspan="2">
+					<p:commandButton id="clearButton" type="submit" value="Clear" ajax="false" action="#{documentsBean.clearSearchFields}" icon="ui-icon-refresh" >
+					<p:tooltip for="clearButton" value="Clears all the above entered fields." showEffect="fade" hideEffect="fade" />
+					</p:commandButton>
+				</p:column>
+				
+		
+					
+				
+        	</p:row>
+        	  
+   
+	</p:panelGrid>
+	
+	<p:panelGrid id="openSessionErrorGrid" styleClass="panelGrid" rendered="#{documentsBean.recordsAvailable == 0}" columns="1">
+	<f:facet name="header" >
+         No Facility Drawings available, please enter valid search Criteria.
+   		 </f:facet>
+		
+	</p:panelGrid>
+	<p:panel id="panel1"  styleClass="panel">
+	
+	</p:panel>
+	<p:dataTable paginator="true" styleClass="myTable" autoUpdate="true" paginatorPosition="top" rows="10" rendered="#{documentsBean.recordsAvailable != 0}"
+				 id="tableEx1" value="#{documentsBean.qeDocumentsList}" var="vardocumentsList" >
+			 
+					  <p:column id="columnEx1" rendered="#{documentsBean.showButton}" width="20">
+								<f:facet name="header"  align="left">
+									<h:selectBooleanCheckbox id="selectAllContracts"
+										styleClass="selectBooleanCheckbox" onclick="checkAndUncheckAll('qedForm', 'qedForm:tableEx1:selectAllContracts');"></h:selectBooleanCheckbox>
+								</f:facet>
+								<h:selectBooleanCheckbox id="selectContract"
+									styleClass="selectBooleanCheckbox" value="#{vardocumentsList.selected}" rendered="#{vardocumentsList.mimeType}"></h:selectBooleanCheckbox>
+						</p:column>
+					
+						<p:column id="columnEx2" sortBy="fileName" width="100">  
+						<f:facet name="header">
+							<h:outputText id="documentTitleLbl" value="#{msgs.documentTitle}"></h:outputText>
+						</f:facet>
+						<h:outputText id="documentTitle" value="#{vardocumentsList.fileName}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx3" sortBy="facilityName" >
+						<f:facet name="header">
+							<h:outputText id="facility" value="#{msgs.facilityName}"></h:outputText>
+						</f:facet>
+						<h:outputText id="facilityName" value="#{vardocumentsList.facilityName}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx4" width="70" sortBy="contractCode">
+						<f:facet name="header">
+							<h:outputText id="contractLbl" value="#{msgs.contractCode}"></h:outputText>
+						</f:facet>
+						<h:commandLink id="displayDocumentLnk" action="#{viewDocuments.onQueryEngineeringDocumentClick}" rendered="#{vardocumentsList.mimeType}" ajax="false" target="_blank" >
+						    <h:graphicImage styleClass="graphicImage" id="image1" value="/resources/images/search.png" border="0" alt="View1" title="View">
+                            </h:graphicImage>
+						
+							<h:outputText id="title" value="#{vardocumentsList.contractCode}"></h:outputText>
+							<f:param name="objectId" id="objectIdParam" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+						<h:commandLink  action="#{viewDocuments.viewNonPrizmQueryEngineeringDocument}" rendered="#{!vardocumentsList.mimeType}" ajax="false" target="_blank" >
+							<h:outputText value="#{vardocumentsList.contractCode}"></h:outputText>
+							<f:param name="objectId" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+					</p:column>
+					
+					<p:column id="columnEx5" sortBy="projectName">
+						<f:facet name="header">
+							<h:outputText id="projectNameLbl" value="#{msgs.projectName}"></h:outputText>
+						</f:facet>
+						<h:outputText id="projectName" value="#{vardocumentsList.projectName}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx6" sortBy="sheetTitle" width="100">
+						<f:facet name="header">
+							<h:outputText id="sheetTitleLbl" value="#{msgs.sheetTitle}"></h:outputText>
+						</f:facet>
+						<h:outputText id="sheetTitle" value="#{vardocumentsList.sheetTitle}"></h:outputText>
+					</p:column>
+										
+					<p:column id="columnEx7" sortBy="primDiscipCode" width="20">
+						<f:facet name="header">
+							<h:outputText id="primDiscipCodeLbl" value="#{msgs.primDiscipCode}"></h:outputText>
+						</f:facet>
+						<h:outputText id="primDiscipCode" value="#{vardocumentsList.primDiscipCode}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx8" sortBy="secDescipCode" width="20">
+						<f:facet name="header">
+							<h:outputText id="secDescipCodeLbl" value="#{msgs.secDescipCode}"></h:outputText>
+						</f:facet>
+						<h:outputText id="secDescipCode" value="#{vardocumentsList.secDescipCode}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx17" sortBy="dwgType" width="20">
+						<f:facet name="header">
+							<h:outputText id="dwgTypeLbl" value="#{msgs.dwgType}"></h:outputText>
+						</f:facet>
+						<h:outputText id="dwgTypeId" value="#{vardocumentsList.dwgType}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx9" sortBy="designComp">
+						<f:facet name="header">
+							<h:outputText id="designCompLbl1" value="#{msgs.designComp}"></h:outputText>
+						</f:facet>
+						<h:outputText id="designComp" value="#{vardocumentsList.designComp}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx10" sortBy="sheetNum">
+						<f:facet name="header">
+							<h:outputText id="sheetNumLbl" value="#{msgs.sheetNum}"></h:outputText>
+						</f:facet>
+						<h:outputText id="sheetNum" value="#{vardocumentsList.sheetNum}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx11" sortBy="plansetNum" >
+						<f:facet name="header">
+							<h:outputText id="PageLbl" value="#{msgs.pageNumber}"></h:outputText>
+						</f:facet>
+						<h:outputText id="Page" value="#{vardocumentsList.plansetNum}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx12" sortBy="plansetTotal">
+						<f:facet name="header">
+							<h:outputText id="PageTotalLbl" value="#{msgs.PageTotal}"></h:outputText>
+						</f:facet>
+						<h:outputText id="PageTotal" value="#{vardocumentsList.plansetTotal}"></h:outputText>
+					</p:column>
+					
+						<p:column id="columnEx13" sortBy="asBuiltDate">
+						<f:facet name="header">
+							<h:outputText id="ABLbl" value="#{msgs.AsBuiltDate}"></h:outputText>
+						</f:facet>
+						<h:outputText id="AsBuiltDate" value="#{vardocumentsList.asBuiltDate}"  >
+								<f:convertDateTime pattern="MM-dd-yyyy" />
+						</h:outputText>
+					</p:column>
+						<p:column id="columnEx14" sortBy="wsscModNum" width="20">
+						<f:facet name="header">
+							<h:outputText id="modLbl" value="#{msgs.ModNumber}"></h:outputText>
+						</f:facet>
+						<h:outputText id="ModNumber" value="#{vardocumentsList.wsscModNum}"></h:outputText>
+					</p:column>
+						<p:column id="columnEx15" sortBy="scadaName">
+						<f:facet name="header">
+							<h:outputText id="ScadaLbl" value="#{msgs.Scada}"></h:outputText>
+						</f:facet>
+						<h:outputText id="scada" value="#{vardocumentsList.scadaName}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx16" sortBy="comments">
+						<f:facet name="header">
+							<h:outputText id="commentLbl" value="#{msgs.comment}"></h:outputText>
+						</f:facet>
+						<h:outputText id="comment" value="#{vardocumentsList.comments}"></h:outputText>
+					</p:column>
+					
+					<f:facet name="footer">
+						<p:commandButton id="multiViewButton" value="View Drawings" icon="ui-icon-search" action="#{documentsBean.showDocuments}" onclick="return checkForSelected('qedForm')"/>
+						<p:commandButton id="resetButton" value="#{msgs.reset}" icon="ui-icon-cancel" onclick="resetAll('qedForm');"/>
+					</f:facet>
+					
+					</p:dataTable>
+					
+					
+					
+
+</h:form>
+</h:body>
+</html>

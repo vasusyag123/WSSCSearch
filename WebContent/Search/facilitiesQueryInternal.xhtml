@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	
+<h:head>
+<title>viewQueryEngineeringDocument</title>
+</h:head>
+<h:body>
+
+
+ 	
+	<object id="PrizmViewer"
+			classid="CLSID:7A2633F0-33D5-4F5E-93BE-74ACBEE7F7EA" height="100%"
+			width="100%">
+			<param name="SRC" value="#{request.contextPath}/ViewQueryEngineeringDocumentServlet"/>
+
+			<embed src="#{request.contextPath}/ViewQueryEngineeringDocumentServlet" height="100%" width="100%">
+			</embed>
+	</object>
+
+</h:body>
+</html>

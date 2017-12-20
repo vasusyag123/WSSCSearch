@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition>
+		<ui:param name="isRepUser"	 value="#{request.isUserInRole('RepAdmin') or request.isUserInRole('RepViewer')}" />
+		<div id="header-container">
+	        <header class="wrapper">
+				  <div id="logo"></div>
+				  <div id="title">Facilities Search</div>
+				  <div id="toplinks">				
+					<h:form styleClass="form" id="logoutfrm">				    
+					
+					</h:form>			
+				</div>	
+	       </header>
+		</div>
+	</ui:composition>
+</h:body>
+</html>

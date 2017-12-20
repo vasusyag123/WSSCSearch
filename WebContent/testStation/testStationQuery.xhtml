@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+		<title><h:outputText value="#{testStationBean.title }"></h:outputText></title>
+		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+</f:facet>
+<h:outputScript library="js" name="common.js" />
+<h:outputStylesheet library="css" name="appcss.css"></h:outputStylesheet>
+</h:head>
+<h:body>
+<h:form id="qedForm"  styleClass="form">
+	<p:panelGrid id="openSessionErrorGrid" styleClass="panelGrid" rendered="#{testStationBean.recordsAvailable == 0}" columns="1">
+	<f:facet name="header">
+          No Test Station Drawings found in this search
+   		 </f:facet>
+		
+	</p:panelGrid>
+	<p:panelGrid id="openSessionGrid" styleClass="panelGrid" rendered="#{testStationBean.recordsAvailable != 0}" columns="1">
+
+   		 
+   		
+		
+	</p:panelGrid>
+	 <p:panel id="panel1"  styleClass="panel"  style="background: #727272">
+	
+	  </p:panel>
+	<p:dataTable paginator="true" styleClass="myTable" autoUpdate="true" paginatorPosition="bottom" rows="10" rendered="#{testStationBean.recordsAvailable != 0}"
+				 id="tableEx1" value="#{testStationBean.tsDocumentsList}" var="vardocumentsList">\
+				 	<f:facet name="header" align="center" >
+							<h1>Test Station Drawings</h1>
+						</f:facet>
+					<p:column id="columnEx1" rendered="#{testStationBean.showButton}">
+								<f:facet name="header"  align="left">
+									<h:selectBooleanCheckbox id="selectAllContracts"
+										styleClass="selectBooleanCheckbox" onclick="checkAndUncheckAll('qedForm', 'qedForm:tableEx1:selectAllContracts');"></h:selectBooleanCheckbox>
+								</f:facet>
+								<h:selectBooleanCheckbox id="selectContract"
+									styleClass="selectBooleanCheckbox" value="#{vardocumentsList.selected}" rendered="#{vardocumentsList.mimeType}"></h:selectBooleanCheckbox>
+					</p:column>
+						
+					<p:column id="columnEx2">
+						<f:facet name="header">
+							<h:outputText id="documentTitleLbl" value="#{msgs.ttestStationName}"></h:outputText>
+						</f:facet>
+						<h:commandLink id="tWSSCContractNoLnk" action="#{viewDocuments.viewNonPrizmQueryTestStationDocument}" rendered="#{vardocumentsList.mimeType}" ajax="false" target="_blank">
+							 <h:graphicImage styleClass="graphicImage" id="image1" value="/resources/images/search.png" border="0" alt="View1" title="View">
+                            </h:graphicImage>
+							<h:outputText id="title" value="#{vardocumentsList.ttestStationName}"></h:outputText>
+							<f:param name="objectId" id="objectIdParam" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+						<h:commandLink  action="#{viewDocuments.viewNonPrizmQueryTestStationDocument}" rendered="#{!vardocumentsList.mimeType}" ajax="false" target="_blank">
+						<h:outputText id="documentTitle" value="#{vardocumentsList.ttestStationName}"></h:outputText>
+						<f:param name="objectId" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+					</p:column>
+					
+					<p:column id="columnEx3">
+						<f:facet name="header">
+							<h:outputText id="contractNumber" value="#{msgs.tcontractNumber}"></h:outputText>
+						</f:facet>
+						<h:outputLink id="tContractNoLnk" value="http://intwasp:81/Drawings/openSession.faces" target="_new">
+							 <h:graphicImage styleClass="graphicImage" id="image2" value="/resources/images/search.png" border="0" alt="View1" title="View">
+                            </h:graphicImage>
+                            <f:param name="ContractNo" value="#{vardocumentsList.tcontractNumber}" />   
+                            <f:param name="WildCardSearch" value="Y_ES" />   
+							<h:outputText id="contractTitle" value="#{vardocumentsList.tcontractNumber}"></h:outputText>							
+						</h:outputLink>
+						
+					</p:column>
+					
+					
+					
+				
+					
+					<p:column id="columnEx5">
+						<f:facet name="header">
+							<h:outputText id="tTsNoLbl" value="#{msgs.tTsNo}"></h:outputText>
+						</f:facet>
+						<h:outputText id="tTsNo" value="#{vardocumentsList.tTsNo}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx6">
+						<f:facet name="header">
+							<h:outputText id="t200FTSheetLbl" value="#{msgs.t200FTSheet}"></h:outputText>
+						</f:facet>
+						<h:outputText id="t200FTSheet" value="#{vardocumentsList.t200FTSheet}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx7">
+						<f:facet name="header">
+							<h:outputText id="tLocalityLbl" value="#{msgs.tLocality}"></h:outputText>
+						</f:facet>
+						<h:outputText id="tLocality" value="#{vardocumentsList.tLocality}"></h:outputText>
+					</p:column>
+					
+						<p:column id="columnEx8">
+						<f:facet name="header">
+							<h:outputText id="tAnodesLbl" value="#{msgs.tAnodes}"></h:outputText>
+						</f:facet>
+						<h:outputText id="tAnodes" value="#{vardocumentsList.tAnodes}"></h:outputText>
+					</p:column>
+					
+					
+						<p:column id="columnEx9">
+						<f:facet name="header">
+							<h:outputText id="tcathProtectLbl1" value="#{msgs.tcathProtect}"></h:outputText>
+						</f:facet>
+						<h:outputText id="tcathProtect" value="#{vardocumentsList.tcathProtect}"></h:outputText>
+					</p:column>
+					
+									
+					<p:column id="columnEx16">
+						<f:facet name="header">
+							<h:outputText id="commentLbl" value="#{msgs.comment}"></h:outputText>
+						</f:facet>
+						<h:outputText id="comment" value="#{vardocumentsList.comment}"></h:outputText>
+					</p:column>
+					
+						
+					</p:dataTable>
+					<h:messages id="messages1" styleClass="messages"></h:messages>
+</h:form>
+</h:body>
+</html>

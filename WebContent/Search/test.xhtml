@@ -1,0 +1,829 @@
+<%@page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<%@page import="com.wssc.formeleven.dao.UserAccountInfo"%>
+<%@page import="com.wssc.formeleven.dao.UserAccountInfoRow"%>
+<%@page import="com.wssc.formeleven.dao.ManagerInfo"%>
+<%@page import="com.wssc.formeleven.dao.ManagerInfoRow"%>
+<%@page import="com.wssc.formeleven.dao.OrgNo"%>
+<%@page import="com.wssc.formeleven.dao.OrgNoRow"%>
+<%@page import="com.wssc.formeleven.dao.OrgNoOrgName"%>
+<%@page import="com.wssc.formeleven.dao.OrgNoOrgNameRow"%>
+<%@page import="com.wssc.eleave.utils.LoadSuggestion"%>
+<%@page import="java.util.*"%>
+<HTML>
+<head>
+<script
+	src="http://cob-fileaep-01:9080/itforms/forms/misc/eforms-factory.js"
+	type="text/javascript" language="JavaScript"></script>
+<link href="http://cob-fileaep-01:9080/itforms/forms/css/forms.css"
+	rel="stylesheet" type="text/css">
+<link rel='stylesheet'
+	href='http://cob-fileaep-01:9080/itforms/css/Wcm.css' type='text/css'>
+<link rel="stylesheet" type="text/css"
+	href="http://cob-fileaep-01:9080/itforms/regions/jquery.autocomplete.css" />
+<script src="http://www.google.com/jsapi"></script>
+<script
+	src="http://cob-fileaep-01:9080/itforms/regions/jquery-1.6.2.min.js"
+	type="text/javascript" language="JavaScript"></script>
+<script
+	src="http://cob-fileaep-01:9080/itforms/regions/jquery.autocomplete.js"></script>
+<script>
+			<%LoadSuggestion loadSug = new LoadSuggestion();
+			List fullNames = loadSug.getFullNameList();
+			session.setAttribute("ldapNames", fullNames);%>
+</script>
+<script>
+	var formData; 
+	var userDesignation;
+	var orgChoiceArray =new Array();
+	var tempPositionTitleArray = new Array();
+	var isUserInAAGroup='<%=request.isUserInRole("AAGroup")%>';
+	var isUserInBudgetGroup='<%=request.isUserInRole("BudgetGroup")%>';
+	var isUserInTCGroup='<%=request.isUserInRole("TCGroup")%>';
+	var isUserInHRGroup =  '<%=request.isUserInRole("HRGroup")%>';
+	var isUserInGLGroup =  '<%=request.isUserInRole("GLGroup")%>';
+	var isUserInGroup1 =  '<%=request.isUserInRole("Group1")%>';
+	var  orgTobeUsed;
+			<%System.out.println("--STARTING form11.jsp-vasu--");
+			String userEmpId = "";
+			String userId = "";
+			String orgId = "";
+			String orgName = "";
+			String userEmpEmailId = "";
+			String supervisorEmpId = "";
+			String supervisorEmailId = "";
+			String empFullName = "";
+			String empGrade = "";
+			String empPositionTitle = "";
+			String managerFullName = "";
+			String orgNoNameString = "";
+			String empMgrPositionTitle = "";
+			System.out.println("--001--");
+			UserAccountInfo userInfo = new UserAccountInfo();
+			//userInfo.execute(request.getRemoteUser().toUpperCase());
+			userInfo.execute("VSYAGON");
+			UserAccountInfoRow[] userAccRows = userInfo.getRows();
+			System.out.println("userAccRows Length" + userAccRows.length);
+
+			if (userAccRows.length == 0) {%> window.alert("System recognizes that you do not belong to WSSC Employeee Group, Please contact Help Desk"); <%}
+			userEmpId = userAccRows[0].getPR_EMP_ID().toString();
+			userId = userAccRows[0].getPR_USER_ID().toString();
+			orgId = userAccRows[0].getPR_ORG_NUM().toString();
+			orgName = userAccRows[0].getPR_ORG_NAME().toString();
+			userEmpEmailId = userAccRows[0].getPR_EMP_EMAIL().toString();
+			supervisorEmpId = userAccRows[0].getPR_EMP_SUPV_ID().toString();
+			empFullName = userAccRows[0].getPR_EMP_FULL_NAME().toString();
+
+			empGrade = userAccRows[0].getPR_EMP_GRADE().toString();
+			empPositionTitle = userAccRows[0].getPR_EMP_POSN_TITLE().toString();
+			orgNoNameString = orgId + "_" + orgName;
+
+			System.out.println("userEmpId :" + userEmpId);
+			System.out.println("userId :" + userId);
+			System.out.println("orgId :" + orgId);
+			System.out.println("orgName :" + orgName);
+			System.out.println("userEmpEmailId :" + userEmpEmailId);
+			System.out.println("supervisorEmailId :" + supervisorEmailId);
+			System.out.println("empFullName :" + empFullName);
+
+			System.out.println("empGrade :" + empGrade);
+			System.out.println("empPositionTitle :" + empPositionTitle);
+
+			ManagerInfo userMgrInfo = new ManagerInfo();
+			System.out.println("supervisorEmpId :" + supervisorEmpId);
+			userMgrInfo.execute(supervisorEmpId);
+
+			ManagerInfoRow[] userMgrAccRows = userMgrInfo.getRows();
+			supervisorEmailId = userMgrAccRows[0].getPR_MGR_EMP_EMAIL()
+					.toString();
+			empMgrPositionTitle = userMgrAccRows[0].getPR_EMP_MGR_POSN_TITLE()
+					.toString();
+			System.out.println("userMgrAccRows Length : "
+					+ userMgrAccRows.length);
+			System.out.println("userMgremail :" + userMgrAccRows.length + " "
+					+ supervisorEmailId);
+			System.out.println("empMgrPositionTitle :" + userMgrAccRows.length
+					+ " " + empMgrPositionTitle);
+
+			managerFullName = userMgrAccRows[0].getPR_MGR_EMP_FULL_NAME()
+					.toString();
+			System.out.println("managerFullName : " + userMgrAccRows.length
+					+ " " + managerFullName);
+
+			OrgNo orgInfo = new OrgNo();
+			orgInfo.execute();
+			OrgNoRow[] orgRows = orgInfo.getRows();
+			if ((orgRows != null) && orgRows.length > 0) {
+				for (int orgCtr = 0; orgCtr < orgRows.length; orgCtr++) {%>
+       				orgChoiceArray[<%=orgCtr%>] = '<%=orgRows[orgCtr].getOrg_Numbers().toString()%>';        		
+			<%}
+			}%>	
+		var funcKeyVal = {
+		Set : function(funcKey,funcVal) {
+				this[funcKey] = funcVal;
+			  },
+		Get : function(funcKey){
+				return this[funcKey];
+					  }
+			  }
+
+		<%OrgNoOrgName OrgNoOrgNameInfo = new OrgNoOrgName();
+			OrgNoOrgNameInfo.execute();
+			OrgNoOrgNameRow[] orgNoNameRows = OrgNoOrgNameInfo.getRows();
+
+			if ((orgNoNameRows != null) && orgNoNameRows.length > 0) {
+				for (int c = 0; c < orgNoNameRows.length; c++) {
+					String name1 = (String) orgNoNameRows[c].getOrgName();
+					String str = name1.replaceAll("[^a-zA-Z 0-9]+", "");%>
+				var tempVal= '<%=str%>';
+				
+				funcKeyVal.Set('<%=orgNoNameRows[c].getOrgNo().toString()%>',Array(tempVal));			
+				<%}
+			}%>
+   		
+</script>
+<script language="JavaScript">
+		form.addOnLoad(loadHandler);
+		function process()
+				{
+				  var nameText = document.getElementById('lastName').value;
+				  var nameValue = document.getElementById('lastName').value;
+				  var emailMap = {};
+				  <%LoadSuggestion loadSug1 = new LoadSuggestion();
+					HashMap userMap = loadSug1.getUserMap();
+					Set set = userMap.entrySet();
+					Iterator i = set.iterator();
+					while (i.hasNext()) {
+						Map.Entry me = (Map.Entry) i.next();%>
+						emailMap["<%=me.getKey() != null ? me.getKey().toString() : null%>"]="<%=me.getValue() != null ? me.getValue().toString()
+								: null%>";
+					<%}%>
+					  // alert("nameText "+nameText );
+				
+						var user = emailMap[nameValue];
+                       	var samAccount = user.substring(0,user.indexOf(':'));
+                        var emailId = user.substring(user.indexOf(':')+1);
+						//alert("user :"+user +"samAccount :"+samAccount +"emailId :"+emailId);
+						form.findCell("DynaUser").setValueFromString(samAccount);
+					
+				}
+		
+		       function loadHandler(){
+		       		form.findCell("ApprovalInd").setValueFromString("")
+					form.findCell("BudgetGroupLeaderInitial").setEnabled(false);
+					form.findCell("HRMSInitial").setEnabled(false);
+					PositionAddChoiceList = form.createChoiceList("PositionAddChoiceList");
+					PositionLoseChoiceList = form.createChoiceList("PositionLoseChoiceList");
+					PositionDeleteChoiceList = form.createChoiceList("PositionDeleteChoiceList");
+			     	form.findCell("EmpId").setValueFromString("<%=userEmpId%>");
+				   // userAccessRole();
+				   getUserDesignation();
+				    loadGainingPositionDetails();
+				   // loadTeamChiefs();				   				    
+					GradeChoiceList = form.createChoiceList("GradeChoiceList");								
+					// alert("6-26-2014 start" );
+					loadLosingPositionDetails();
+					// alert("6-26-2014 end" );				     	
+					 form.findCell("EmpManagerName").setValueFromString("<%=managerFullName%>");
+					 form.findCell("FullName").setValueFromString("<%=empFullName%>");
+					 form.findCell("EmpEmailId").setValueFromString("<%=userEmpEmailId%>");
+					 form.findCell("SupEmailId").setValueFromString("<%=supervisorEmailId%>");
+					 form.findCell("BFGroupCategory").setValueFromString("<%=empMgrPositionTitle%>");	
+			document.getElementById("fine").style.display = "none";
+			document.getElementById("fill").style.display = "block";					 
+				}		
+				// alert("6-26-2014 start" );
+				
+				function loadOrgNameLookup(){
+			 	
+			 	   orgTobeUsed=form.findCell("GainigOrgNo").getValueAsString();
+			 	   form.findCell("WSSCGainingOrgNo").setValueFromString(orgTobeUsed);
+					if(isAvailable(orgTobeUsed,orgChoiceArray)=="found"){	    	
+			    	       newOrgId = funcKeyVal[orgTobeUsed][0];	
+					       form.findCell("GainingOrg").setValueFromString(newOrgId);
+			    	}else{
+					//alert("clearing gaining org");
+			    	form.findCell("GainingOrg").setValueFromString("");
+			    	}
+
+					form.findCell("PositionTitleToAdd").setValueFromString(form.findCell("GainingPositionTitleLookUp").getValueAsString());
+					
+					    
+						form.findCell("NoOfPositions").setValueFromString("1");
+					
+						var positionTitlesToAdd = new Array();
+						var gainingPositionLookupCell = form.findCell("GainingPositionTitleLookUp");
+					
+						var gainingQueryResponse = gainingPositionLookupCell.doLookup();
+						var gainingData = gainingQueryResponse.getData();
+
+						for(var i=0; i<gainingData.length; i++) {
+							positionTitlesToAdd[i] = gainingData[i].getValue("GainingPositionTitleLookUp").toString();
+
+						}										 
+						PositionAddChoiceList.setChoices(positionTitlesToAdd);
+						form.findCell("PositionTitleToAdd").setChoiceList(PositionAddChoiceList,true);
+						(form.findCell("PositionTitleToAdd")).OnChange.add(loadAddPositionNoLookup);
+						
+				}
+	
+					
+				function loadLosingOrgNameLookup(){
+				
+			    		LosingorgTobeUsed=form.findCell("LosingOrgNo").getValueAsString();
+			 	   		form.findCell("WSSCOrgNo").setValueFromString(LosingorgTobeUsed);
+			 	   
+						if(isAvailable(LosingorgTobeUsed,orgChoiceArray)=="found")
+						{	    	
+				    	       newOrgId = funcKeyVal[LosingorgTobeUsed][0];	
+						       form.findCell("LosingOrg").setValueFromString(newOrgId);						       						       
+						     	
+				    	}
+				    	else
+				    	{
+									//alert("clearing losing org");
+				    		   form.findCell("LosingOrg").setValueFromString("");
+				    	}
+			    	    form.findCell("PositionTitleDelete").setValueFromString(form.findCell("PositionTitleLookup").getValueAsString());
+						form.findCell("NoOfPositionsDelete").setValueFromString("1");
+						
+						var positionTitles = new Array();
+								var lookupCell = form.findCell("PositionTitleLookup");
+								var queryResponse = lookupCell.doLookup();
+							
+							 	var data = queryResponse.getData();
+								for(var i=0; i<data.length; i++) {
+									positionTitles[i] = data[i].getValue("PositionTitleLookup").toString();
+								}
+							 	PositionDeleteChoiceList.setChoices(positionTitles);
+							  	form.findCell("PositionTitleDelete").setChoiceList(PositionDeleteChoiceList,true);
+						     	(form.findCell("PositionTitleDelete")).OnChange.add(loadPositionNoLookup);
+
+				}
+			
+			
+			    function loadLosingPositionDetails()
+					{
+						LosingOrgList = form.createChoiceList("LosingOrgList", orgChoiceArray);
+						LosingGradeChoiceList = form.createChoiceList("LosingGradeChoiceList");
+						form.findCell("LosingOrgNo").setChoiceList(LosingOrgList,true);
+						(form.findCell("LosingOrgNo")).OnChange.add(loadLosingOrgNameLookup);
+					} 
+				// alert("6-26-2014 end" );
+			
+					function loadGainingPositionDetails(){
+					
+						OrgList = form.createChoiceList("OrgList", orgChoiceArray);
+						form.findCell("GainigOrgNo").setChoiceList(OrgList,true);
+						AddGradeChoiceList = form.createChoiceList("AddGradeChoiceList");							
+					    (form.findCell("GainigOrgNo")).OnChange.add(loadOrgNameLookup);
+
+					}
+					
+				function isAvailable(orgTobeUsed, orgChoiceArray){
+						for(var i=0; i<orgChoiceArray.length; i++) {
+								if (orgChoiceArray[i].match(orgTobeUsed))       
+								 {  
+							   
+								 return 'found';   
+								
+								 }
+							}
+						
+						return 'notFound'; 
+						 
+						}	
+					function loadAddPositionNoLookup(){
+							
+						   var pGainlookupCell = form.findCell("GainingPositionNoLookUp");							
+						   var pGainqueryResponse = pGainlookupCell.doLookup();						  
+						   var pPositionTitleAddCell = form.findCell("PositionTitleToAdd");						 
+     					        var PositionTitleToAddTobeUsed; 
+						 PositionTitleToAddTobeUsed=pPositionTitleAddCell.getValueAsString();
+						   var pGdata = pGainqueryResponse.getData();						  						 	
+						 	//alert("pGdata.length :"+pGdata.length);
+						 	if(pGdata.length > 0){
+								 	 var tempPositionTitleLookUp=form.findCell("GainingPositionTitleLookUp");
+								 	 var pPositionTitleResponse =  tempPositionTitleLookUp.doLookup();
+								 	 var pGTdata = pPositionTitleResponse.getData();
+						 	
+									 	for(k=0;k<pGTdata.length;k++){
+									 		tempPositionTitleArray[k]=pGTdata[k].getValue("GainingPositionTitleLookUp").toString();
+									 	}						 													 	
+									var jobAddNumberCell = form.findCell("PositionNo");
+									jobAddNumberCell.setValueFromString(pGdata[0].getValue("GainingPositionNoLookUp").toString());
+							
+									var capitalAddCell = form.findCell("CapitalAdd");
+									capitalAddCell.setValueFromString(pGdata[0].getValue("CapitalAddLookUp").toString());
+									
+									var gainingGradeMax = pGdata[0].getValue("GainingGradeMaxLookUp").toString();
+									var gainingGradeMin = pGdata[0].getValue("GainingGradeMinLookUp").toString();
+								
+									var gradeAddCell = form.findCell("Grade");
+									var gradeAddChoices = new Array();
+									 	if(gainingGradeMax == gainingGradeMin) {
+													gradeAddChoices[0] = gainingGradeMin;
+												}else {
+													gradeAddChoices[0] = gainingGradeMin;
+													gradeAddChoices[1] = gainingGradeMax;
+										}								
+									AddGradeChoiceList.setChoices(gradeAddChoices);
+									gradeAddCell.setChoiceList(AddGradeChoiceList,true);
+									}
+									else{										
+             		  					form.findCell("PositionNo").setValueFromString("");
+                             		    form.findCell("Grade").setValueFromString("");
+			                            form.findCell("CapitalAdd").setValueFromString("");
+									}															
+				}
+				
+				
+	
+	
+					function isFound(PositionTitleToAddTobeUsed, tempPositionTitleArray){
+					
+						for(var i=0; i<tempPositionTitleArray.length; i++) {
+								if (tempPositionTitleArray[i].match(PositionTitleToAddTobeUsed))       
+								 { 
+								 return 'found';        
+								 }
+							}
+						
+						return 'notFound';  
+						}
+	
+				function loadTeamChiefs(){
+						
+					var tcNames = new Array();
+					var tclookupCell = form.findCell("TeamChiefsLooksUp");
+					var tcqueryResponse = tclookupCell.doLookup();
+					var tcdata = tcqueryResponse.getData();
+
+					for(var i=0; i<tcdata.length; i++) {
+						tcNames[i] = tcdata[i].getValue("TeamChiefsLooksUp").toString();
+					}
+					tcChoiceList = form.createChoiceList("tcChoiceList",tcNames);
+					form.findCell("TeamChiefLookUp").setChoiceList(tcChoiceList,true);
+				
+				}
+				
+			function loadPositionNoLookup(){
+			   var plookupCell = form.findCell("positionNoLookUp");
+			   var pqueryResponse = plookupCell.doLookup();			  
+			   var pPositionTitleDeleteCell = form.findCell("PositionTitleDelete");			   
+			// alert("PositionNoDelete"+pPositionTitleDeleteCell.getValueAsString());			
+				var pdata = pqueryResponse.getData();
+			//alert("data"+pdata+" length :"+pdata.length);	
+			
+			if(pdata.length>0){
+						 	 			
+				var jobNumberCell = form.findCell("PositionNoDelete");
+				jobNumberCell.setValueFromString(pdata[0].getValue("positionNoLookUp").toString());				
+				var capitalCell = form.findCell("CapitalDelete");
+				capitalCell.setValueFromString(pdata[0].getValue("CapitalDeleteLookUp").toString());				
+				var gradeMax = pdata[0].getValue("gradeMaxLookUp").toString();
+				var gradeMin = pdata[0].getValue("gradeMinLookUp").toString();
+				//alert("Grade Max:"+gradeMax+" Grade Min:"+gradeMin);
+				var gradeCell = form.findCell("GradeDelete");
+				var gradeChoices = new Array();
+			 	if(gradeMax == gradeMin) {
+					//gradeCell.setValueFromString(gradeMax);
+					gradeChoices[0] = gradeMin;
+				}else {
+					gradeChoices[0] = gradeMin;
+					gradeChoices[1] = gradeMax;
+				}
+				GradeChoiceList.setChoices(gradeChoices);
+				gradeCell.setChoiceList(GradeChoiceList,true);				
+			}else{
+			
+						//alert("PositionTitleDelete,PositionNoDelete,GradeDelete,CapitalDelete");			                          
+             		  					form.findCell("PositionNoDelete").setValueFromString("");
+                             		    form.findCell("GradeDelete").setValueFromString("");
+			                            form.findCell("CapitalDelete").setValueFromString("");
+			}
+			}
+	 
+	 				function userAccessRole(){														
+								var userRolesLookupCell = form.findCell("isInWsscManagersView");
+								var userRolequeryResponse = userRolesLookupCell.doLookup();
+								var userRoleData = userRolequeryResponse.getData();								
+								form.findCell("BFGroupCategory").setValueFromString(userRoleData[0].getValue("isInWsscManagersView").toString());																				 							  
+							     //getUserDesignation();
+					}
+			function  getUserDesignation(){					           					            
+					             if (isUserInGroup1=="true"){					              
+					              	form.findCell("BFUserCategory").setValueFromString("GeneralManager");
+					              	//alert("is GeneralManager");
+					              	disableGMSignatureFields();					              	
+					             }
+					    		  else if (isUserInAAGroup=="true")	{				              
+					              	form.findCell("BFUserCategory").setValueFromString("AdminStaff");
+					              		//alert("is AdminStaff");
+					              		disableAdminStaffSignatureFields();
+					             }
+					             else if (isUserInTCGroup=="true")	{				              
+					             	 form.findCell("BFUserCategory").setValueFromString("TeamChief");
+					             	 //alert("is TeamChief");
+					             	 disableTeamChiefSignatureFields();
+					             }else 	{				              
+					             	 form.findCell("BFUserCategory").setValueFromString("GroupLeader");
+					             	 //alert("is GroupLeader");
+					             	 disableGroupLeaderSignatureFields();
+					             }				             					             
+						}
+						
+						
+	function disableGMSignatureFields()
+	  {
+
+		form.findCell("GroupLeaderInitial").setEnabled(false);
+		form.findCell("BudgetGroupLeaderInitial").setEnabled(false);
+		form.findCell("TeamChiefInitial").setEnabled(false);
+		form.findCell("TeamChiefInitialGaining").setEnabled(false);
+		form.findCell("HRMSInitial").setEnabled(false);
+			
+	  }
+	function disableAdminStaffSignatureFields()
+	 {
+		form.findCell("GroupLeaderInitial").setEnabled(false);
+		form.findCell("TeamChiefInitial").setEnabled(false);
+		form.findCell("TeamChiefInitialGaining").setEnabled(false);
+		form.findCell("GMCEOInitial").setEnabled(false);
+		form.findCell("BudgetGroupLeaderInitial").setEnabled(false);
+		form.findCell("HRMSInitial").setEnabled(false);
+	 }
+	function disableTeamChiefSignatureFields()
+        {
+		form.findCell("GroupLeaderInitial").setEnabled(false);
+		form.findCell("BudgetGroupLeaderInitial").setEnabled(false);
+		form.findCell("TeamChiefInitialGaining").setEnabled(false);
+		form.findCell("GMCEOInitial").setEnabled(false);
+		form.findCell("HRMSInitial").setEnabled(false);
+	 }
+	function disableGroupLeaderSignatureFields()
+		{
+		
+		form.findCell("BudgetGroupLeaderInitial").setEnabled(false);
+		form.findCell("TeamChiefInitial").setEnabled(false);
+		form.findCell("TeamChiefInitialGaining").setEnabled(false);
+		form.findCell("GMCEOInitial").setEnabled(false);
+		form.findCell("HRMSInitial").setEnabled(false);
+		}	
+	function disableOfficeUseFields()
+		{
+		form.findCell("BudgetGroupLeaderInitial").setEnabled(false);
+		form.findCell("GMCEOInitial").setEnabled(false);
+		form.findCell("HRMSInitial").setEnabled(false);			
+		}				
+	
+	function closeThis(){	
+		var myCmdCollection = form.getCommands();
+		(myCmdCollection.find("close")).execute();
+		
+	}
+	function openAttachment(){	
+		var myCmdCollection = form.getCommands();
+		(myCmdCollection.find("attachments")).execute();
+	}
+	function generatePdf(){
+	 	var myCmdCollection = form.getCommands();
+		(myCmdCollection.find("pdf")).execute();
+	}
+
+	
+
+	function doValidateTheForm()
+	{
+	
+		var positionTitDelete = form.findCell("PositionTitleDelete");
+		var positionNoToDelete = form.findCell("PositionNoDelete");
+		var gradeToDelete = form.findCell("GradeDelete");
+		var noOfPositionsToDelete = form.findCell("NoOfPositionsDelete");
+		var capitalToDelete = form.findCell("CapitalDelete");
+		var losOrgNo = form.findCell("LosingOrgNo");
+		var losOrgName = form.findCell("LosingOrg");
+		var userGrade= form.findCell("BFUserCategory").getValueAsString();
+		var userCategoryValue = form.findCell("BFUserCategory");
+		var form11Value = form.findCell("Number");
+		var goNum= form.findCell("GainigOrgNo");
+	
+	 	  
+
+		if((losOrgNo.getValueAsString() == null) || (losOrgNo.getValueAsString() == ""))
+		{
+			window.alert("Please Enter Losing Org No ");
+			form.setCurrentCell(losOrgNo);
+			return false;
+		}
+		
+		if((losOrgName.getValueAsString() == null) || (losOrgName.getValueAsString() == ""))
+		{
+			window.alert("Please Enter Losing Org Name ");
+			form.setCurrentCell(losOrgName);
+			return false;
+		}
+	
+		if((positionTitDelete.getValueAsString() == null) || (positionTitDelete.getValueAsString() == ""))
+		{
+			window.alert("Please Enter position Title to Delete ");
+			form.setCurrentCell(positionTitDelete);
+			return false;
+		}
+		
+		if((positionNoToDelete.getValueAsString() == null) || (positionNoToDelete.getValueAsString() == ""))
+		{
+			window.alert("Please Enter position number to delete ");
+			form.setCurrentCell(positionNoToDelete);
+			return false;
+		}
+		
+		if((gradeToDelete.getValueAsString() == null) || (gradeToDelete.getValueAsString() == ""))
+		{
+			window.alert("Please Enter Grade to Delete");
+			form.setCurrentCell(gradeToDelete);
+			return false;
+		}
+		if((noOfPositionsToDelete.getValueAsString() == null) || (noOfPositionsToDelete.getValueAsString() == ""))
+		{
+			window.alert("Please Enter no Of Positions to delete");
+			form.setCurrentCell(noOfPositionsToDelete);
+			return false;
+		}
+		if((capitalToDelete.getValueAsString() == null) || (capitalToDelete.getValueAsString() == ""))
+		{
+			window.alert("Please Enter capital to Delete ");
+			form.setCurrentCell(capitalToDelete);
+			return false;
+		}
+			
+	
+		if((form11Value.getValueAsString() == null) || (form11Value.getValueAsString() == ""))
+		{
+			window.alert("Please Enter Form-11 Number");
+			form.setCurrentCell(form11Value);
+			return false;
+		}
+		
+		if((goNum.getValueAsString()==null ) || (goNum.getValueAsString()=="")){
+			var gon = confirm("Please enter Gaining Organization Number");
+				if (gon == true) {
+					form.setCurrentCell(goNum);
+				    return false;
+								} else {
+									return true;}
+		}
+		if(userGrade== "GeneralManager"){
+		   if(form.findCell("GMCEOInitial").verifySignature()==SignatureState.NotSigned ){
+				window.alert("Please Enter your signature as General Manager");
+				form.setCurrentCell(form.findCell("GMCEOInitial"));
+				return false;
+		    }
+		}
+		if(userGrade== "TeamChief"){
+		   if(form.findCell("TeamChiefInitial").verifySignature()==SignatureState.NotSigned ){
+				window.alert("Please Enter your signature as Team Chief");
+				form.setCurrentCell(form.findCell("TeamChiefInitial"));
+				return false;
+		    }
+		}
+		if(userGrade== "AdminStaff"){
+		   if(form.findCell("TeamChiefInitial").verifySignature()==SignatureState.NotSigned ){
+				window.alert("Please Enter your signature as Team Chief Admin Staff");
+				form.setCurrentCell(form.findCell("TeamChiefInitial"));
+				return false;
+		    }
+		}
+			if(userGrade== "GroupLeader"){
+		   if(form.findCell("GroupLeaderInitial").verifySignature()==SignatureState.NotSigned ){
+				//window.alert("Please Enter your signature as Group Leader");				
+				var res = confirm("If you are a Group Leader,Please Enter your signature as GL");
+				if (res == true) {
+					form.setCurrentCell(form.findCell("GroupLeaderInitial"));
+				    return false;
+								} else {
+								var lastNames = document.getElementById('lastName').value;
+								if(lastNames != null && lastNames.length > 0 ){
+								process();
+								return true;}else{
+								alert("Please check - No- option and Enter Last Name, to select sender");
+								document.getElementById('lastName').focus();
+								return false;
+								}
+																	}
+				
+		    }
+		}
+		
+		
+		return true;		
+	}
+
+
+	
+ function isCrossOrg(){
+	 
+	   if(form.findCell("LosingOrgNo").getValueAsString()!= form.findCell("GainigOrgNo").getValueAsString())
+			{
+				form.findCell("CrossOrgInd").setValueFromString("CrossOrg");
+			}
+		else
+			{
+				form.findCell("CrossOrgInd").setValueFromString("SameOrg");
+			}			
+			
+	 }
+	
+	function doValidateNameToProcess()
+	{
+		var lastName = document.getElementById('lastName').value;
+		if(lastName != null && lastName.length > 0) {
+				//form.findCell("DynaUser").setValueFromString(samAccount);
+				process();
+	 	 		return true;
+			}
+			else{
+	 	   		alert("Please Enter Last Name, to select sender");
+				document.getElementById('lastName').focus();
+				return false;	 	 
+		 }		
+	}
+
+	
+		
+	function submit(){
+		form.setCurrentPage(form.getPage("P001"));
+		var retVal = doValidateTheForm();
+		if(retVal){
+		isCrossOrg();
+		form.findCell("ApprovalInd").setValueFromString("false");
+		if(retVal){
+			var subConfirm = confirm("Do you really want to submit this Form-11 to Budget Group");
+				if (subConfirm == true) {
+					var myCmdCollection = form.getCommands();
+			    (myCmdCollection.find("dispatch")).execute(); 	
+								} else {
+									form.setCurrentCell(form.findCell("GroupLeaderInitial"));
+									}	          
+		        }	        	
+			
+			}			        					
+		}
+		
+		
+	function submitToSectedUser(){
+
+		form.setCurrentPage(form.getPage("P001"));
+
+		var retVal = doValidateTheForm();
+	
+		
+		if(retVal){
+		var retUserVal=doValidateNameToProcess();
+
+		isCrossOrg();
+		
+ 	    form.findCell("ApprovalInd").setValueFromString("true");
+ 	   
+		if(retUserVal){
+		//alert("DynaUser :"+form.findCell("DynaUser").getValueAsString() +"ApprovalInd :"+form.findCell("ApprovalInd").getValueAsString());
+		  	    var selConfirm = confirm("Do you really want to submit this Form-11 to the selected user");
+				if (selConfirm == true) {
+					 var myCmdCollection = form.getCommands();			  
+			    (myCmdCollection.find("dispatch")).execute(); 	
+								} else {
+									form.setCurrentCell(form.findCell("GroupLeaderInitial"));
+									}	          
+		        }
+		                	
+			
+			}			        					
+		}
+	
+		
+function showMessage(which) {
+		if (which == 1) {
+			document.getElementById("fine").style.display = "block";
+			document.getElementById("fill").style.display = "none";
+			}
+		else {
+			document.getElementById("fine").style.display = "none";
+			document.getElementById("fill").style.display = "block";
+			}
+}
+
+	function notifyDM(){
+
+			var appUrl = "http://cob-fileaep-01:9080/itforms/Tasks.jsf";
+			var mailSubject = "Form-11 Request: "+form.findCell("Number").getValueAsString()+" Created";
+			
+			 var myManagerName = "";
+	 		 var reqEmployeeName = "";
+
+			var mailMessage = "<table border=\"1\"  BGCOLOR= 'SKYBLUE' align=\"center\"><tr><th colspan=\"2\">Form-11 Request Details : </th></tr><tr><td>Employee Name :</td><td>"+form.findCell("FullName").getValueAsString()+"</td></tr>";
+			mailMessage = mailMessage + "<tr><td>Position Title To Add :</td><td>"+ form.findCell("PositionTitleToAdd").getValueAsString()  +"</td></tr>";
+			
+			mailMessage = mailMessage + "<tr><td>Manager :</td><td>"+form.findCell("EmpManagerName").getValueAsString()+"</td></tr>";
+			mailMessage = mailMessage + "<tr><td>Budget Group Leader :</td><td>"+form.findCell("BudgetGrpLeader").getValueAsString()+"</td></tr>";
+			mailMessage = mailMessage + "<tr><td>Gainig Organization :</td><td>"+form.findCell("GainingOrg").getValueAsString()+"</td></tr>";
+			mailMessage = mailMessage + "<tr><td>Losing Organization :</td><td>"+form.findCell("LosingOrg").getValueAsString()+"</td></tr>";
+		
+
+			mailMessage = mailMessage + "<tr><td>Position Title To Delete :</td><td>"+ form.findCell("PositionTitleDelete").getValueAsString()  +"</td></tr>";						
+			
+			mailMessage = mailMessage + "<tr><td>URL:</td><td><a href='"+appUrl+"'>Click Me to Open</a></td></tr></table>";
+			
+			mailMessage = mailMessage + "<tr><td>Action Requested :"+ form.findCell("ActionRequested").getValueAsString()  +"</tr>";						
+			var email1=form.findCell("EmpEmailId").getValueAsString();
+	
+
+			var email2= form.findCell("SupEmailId").getValueAsString();
+			var emailList = email2;
+			var ccList= email1;
+			window.alert("emailList:"+emailList);
+			var frommailid = emailList, data = { fromemail: emailList, ccList: ccList, mailMessage: mailMessage, mailSubject:mailSubject };			
+			$.ajax({            
+			      	type: "POST",            
+			      	url: "sendmail.jsp",            
+			      	data: data,            
+			      	dataType: "text/html" }); 
+		    
+	}	
+	
+</script>
+</head>
+<body class="toolbar">
+<h3>Fill Information </h3>
+<h3>click on submit</h3>
+<table>
+	<tr>
+		<label for="property_q1"> Do you want to send <br> this form for Budget Approval?</label>
+		</tr>
+		<tr>
+			<td><input name="property_q1"  type="radio" value="Yes" onclick = "showMessage(1)" /></td>
+				<td><label class="bold">Yes</label></td>
+			
+				<td><input name="property_q1"  type="radio" value="No" onclick = "showMessage(2)" checked='checked' /></td>
+			<td><label class="bold">No</label></td>
+		</tr>
+	
+
+</table>
+
+
+<br />
+<br />
+
+
+<table class="linksStyle" style="width=100%">
+	<tr>
+		<td width="100%" align="left">
+		<div id="fine" style="display:none">
+			<fieldset id="X29" style="width:130px; height:103px; " />
+			<legend	id="X29Legend" class="wcmListViewLink">Action</legend> 
+			<span id="X31" type="label" style="overflow:hidden; position:absolute; white-space:nowrap; top:22px; left:4px; width:90px; height:19px; ">
+			</span> <br/>
+			&nbsp;&nbsp;<a href="javascript:submit();" class="wcmListViewLink"><img
+			border="0" src="submit.gif" width="16" height="16">Submit</a><br />			
+		</div>
+		</td>
+	</tr>
+<tr>
+		<td width="100%" align="left">
+
+<div id="fill" style="display:none">Please enter Last Name and select full name
+          <table><tr><td>
+        
+
+        <input type="text" id="lastName" name="lastName"
+			style="font-family: Arial; font-size: 12pt" /></td>
+		<td>
+		  <span>
+          <script>		$("#lastName").autocomplete("getdata.jsp");
+          
+	</script>
+		<input type="button" class="dialogButton" id="addButton"
+			style="background-image: url(submit.gif);  width: 22px; height: 25px; background-color: transparent"
+			name="add" onclick="process();"></span></td>
+			</tr>
+			<tr>
+			<td>
+			<fieldset id="X30" style="width:130px; height:103px; " />
+			<legend id="X30Legend" class="wcmListViewLink">Action</legend> <span id="X31"
+			type="label"
+			style="overflow:hidden; position:absolute; white-space:nowrap; top:22px; left:4px; width:90px; height:19px; ">
+		</span> <br />
+		&nbsp;&nbsp;<a href="javascript:submitToSectedUser();" class="wcmListViewLink"><img
+			border="0" src="submit.gif" width="16" height="16"> Submit</a><br />
+			
+			</td>
+			
+	</tr>
+	</table>
+	
+</div>
+</td>
+</tr>
+</table>
+</body>
+</HTML>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Search Test Station</title>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=7; IE=8; IE=9; IE=EDGE"/>
+		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+</f:facet>
+<h:outputStylesheet name="appcss.css" library="css" />
+</h:head>
+<h:body>
+
+
+	<h:form id="qedForm" styleClass="form" prependId="false">
+		<p:messages id="messages" showDetail="true" severity="error,info"  rendered="#{!facesContext.validationFailed}"/>
+		<p:panel id="pnl" header="WSSC  Test Station Search" style="margin-bottom:10px;text-align: Center;" ></p:panel>
+		<p:panelGrid id="searchgrid" style="text-align: right ; margin-left: 30%;">   
+ 			
+		<f:facet name="header">
+          Test Station Search
+   		 </f:facet>
+
+			<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="testStationName" value="Test Station Name :" for="testStationName"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{testStationBean.uiTestStationName}"
+										id="testStationNames" requiredMessage="Please enter valid Test Station Name">
+					<p:tooltip for="testStationNames" value="Please enter Test Station Name(Example: TS-00443)." showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid Test Station Name." />
+					</p:inputText>
+					<p:message for="testStationNames" styleClass="message" id="testStationNameMessage"></p:message>
+				</p:column>  
+        	</p:row>
+        	
+			<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="contractNumber" value="Contract# :" for="contractNo"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{testStationBean.uicontractNumber}"
+										id="contractNo" requiredMessage="Please enter valid contractNo">
+					<p:tooltip for="contractNo" value="Please enter contractNo (Example: 85-6486F). " showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid contractNo" />
+					</p:inputText>
+					<p:message for="contractNo" styleClass="message" id="contractNoMessage"></p:message>
+				</p:column>  
+        	</p:row>
+        	
+        	
+        	<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="TSNumber" value="TS Number :" for="TSNumbe"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{testStationBean.uiTSNumbe}"
+										id="TSNumbe" requiredMessage="Please enter valid TS Numbe">
+					<p:tooltip for="TSNumbe" value="Please enter TS Numbe (Example: 443)." showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid TS Numbe." />
+					</p:inputText>
+					<p:message for="TSNumbe" styleClass="message" id="idTSNumbeMessage"></p:message>
+				</p:column>  
+        	</p:row>
+        	
+        	<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="UI200FeetShe" value="200 FT Sheet :" for="UI200FeetSheet"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{testStationBean.ui200FeetSheet}"
+										id="UI200FeetSheet" requiredMessage="Please enter valid 200 FT Sheet">
+					<p:tooltip for="UI200FeetSheet" value="Please enter 200 FT Sheet (Example: 206NE13)." showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid Project Name." />
+					</p:inputText>
+					<p:message for="UI200FeetSheet" styleClass="message" id="UI200FeetSheetMessage"></p:message>
+				</p:column>  
+        	</p:row>
+        	
+        		<p:row>
+				<p:column colspan="2">
+					<p:outputLabel id="locality" value="Locality :" for="UILocality"></p:outputLabel>
+				</p:column>  
+	        	<p:column colspan="2">
+	        		<p:inputText styleClass="inputText"  value="#{testStationBean.uiLocality}"
+										id="UILocality" requiredMessage="Please enter valid Locality.">
+					<p:tooltip for="UILocality" value="Please enter Locality. (Example: Old Stage Knolls)." showEffect="fade" hideEffect="fade" />
+					<f:attribute name="msgRef" value="Invalid Locality." />
+					</p:inputText>
+					<p:message for="UILocality" styleClass="message" id="UILocalityMessage"></p:message>
+				</p:column>  
+        	</p:row>
+        	
+	
+			<p:row>
+				<p:column colspan="2">
+					<p:commandButton id="searchButton"  type="submit" value="Search" ajax="false" action="#{testStationBean.processTestStationsSearch}" icon="ui-icon-check"
+						style="margin:0" styleClass="commandButton">
+					<p:tooltip for="searchButton" value="Fetches all drawings matching above fields." showEffect="fade" hideEffect="fade" />
+					</p:commandButton>
+				</p:column>  
+				<p:column colspan="2">
+					<p:commandButton id="clearButton" type="submit" value="Clear" ajax="false" action="#{testStationBean.clearSearchFields}" icon="ui-icon-refresh" >
+					<p:tooltip for="clearButton" value="Clears all the above entered fields." showEffect="fade" hideEffect="fade" />
+					</p:commandButton>
+				</p:column>
+
+        	</p:row>
+        	  
+   
+	</p:panelGrid>
+	
+	
+
+	<p:panelGrid id="openSessionErrorGrid" styleClass="panelGrid" rendered="#{testStationBean.recordsAvailable == 0}" columns="1">
+	<f:facet name="header">
+          No Test Station Drawings found in this search
+   		 </f:facet>
+	</p:panelGrid>
+	<p:panel id="panel1"  styleClass="panel">
+	
+	</p:panel>
+	<p:dataTable paginator="true" styleClass="myTable" autoUpdate="true" paginatorPosition="top" rows="10" rendered="#{testStationBean.recordsAvailable != 0}"
+				 id="tableEx1" value="#{testStationBean.tsDocumentsList}" var="vardocumentsList" scrollHeight="350">
+							
+							<p:column id="columnEx1" rendered="#{testStationBean.showButton}">
+								<f:facet name="header"  align="left">
+									<h:selectBooleanCheckbox id="selectAllContracts"
+										styleClass="selectBooleanCheckbox" onclick="checkAndUncheckAll('qedForm', 'qedForm:tableEx1:selectAllContracts');"></h:selectBooleanCheckbox>
+								</f:facet>
+								<h:selectBooleanCheckbox id="selectContract"
+									styleClass="selectBooleanCheckbox" value="#{vardocumentsList.selected}" rendered="#{vardocumentsList.mimeType}"></h:selectBooleanCheckbox>
+							</p:column>
+						
+						<p:column id="columnEx2" sortBy="ttestStationName">
+						<f:facet name="header">
+							<h:outputText id="documentTitleLbl" value="#{msgs.ttestStationName}"></h:outputText>
+						</f:facet>
+						<h:commandLink id="tWSSCContractNoLnk" action="#{viewDocuments.viewNonPrizmQueryTestStationDocument}" rendered="#{vardocumentsList.mimeType}" ajax="false" target="_blank">
+							 <h:graphicImage styleClass="graphicImage" id="image1" value="/resources/images/search.png" border="0" alt="View1" title="View">
+                            </h:graphicImage>
+							<h:outputText id="title" value="#{vardocumentsList.ttestStationName}"></h:outputText>
+							<f:param name="objectId" id="objectIdParam" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+						<h:commandLink  action="#{viewDocuments.viewNonPrizmQueryTestStationDocument}" rendered="#{!vardocumentsList.mimeType}" ajax="false" target="_blank">
+						<h:outputText id="documentTitle" value="#{vardocumentsList.ttestStationName}"></h:outputText>
+						<f:param name="objectId" value="#{vardocumentsList.docId}"></f:param>
+						</h:commandLink>
+					</p:column>
+					
+					<p:column id="columnEx3" sortBy="tcontractNumber">
+						<f:facet name="header">
+							<h:outputText id="contractNumber" value="#{msgs.tcontractNumber}"></h:outputText>
+						</f:facet>
+						<h:outputLink id="tContractNoLnk" value="http://intwasp:81/Drawings/openSession.faces" target="_new">
+							 <h:graphicImage styleClass="graphicImage" id="image2" value="/resources/images/search.png" border="0" alt="View1" title="View">
+                            </h:graphicImage>
+                            <f:param name="ContractNo" value="#{vardocumentsList.tcontractNumber}" />   
+                            <f:param name="WildCardSearch" value="Y_ES"/>   
+							<h:outputText id="contractTitle" value="#{vardocumentsList.tcontractNumber}"></h:outputText>							
+						</h:outputLink>
+						
+					</p:column>
+					
+					
+					<p:column id="columnEx5" sortBy="tTsNo">
+						<f:facet name="header">
+							<h:outputText id="tTsNoLbl" value="#{msgs.tTsNo}"></h:outputText>
+						</f:facet>
+						<h:outputText id="tTsNo" value="#{vardocumentsList.tTsNo}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx6" sortBy="t200FTSheet">
+						<f:facet name="header">
+							<h:outputText id="t200FTSheetLbl" value="#{msgs.t200FTSheet}"></h:outputText>
+						</f:facet>
+						<h:outputText id="t200FTSheet" value="#{vardocumentsList.t200FTSheet}"></h:outputText>
+					</p:column>
+					
+					<p:column id="columnEx7" sortBy="tLocality">
+						<f:facet name="header">
+							<h:outputText id="tLocalityLbl" value="#{msgs.tLocality}"></h:outputText>
+						</f:facet>
+						<h:outputText id="tLocality" value="#{vardocumentsList.tLocality}"></h:outputText>
+					</p:column>
+					
+						<p:column id="columnEx8"  sortBy="tAnodes">
+						<f:facet name="header">
+							<h:outputText id="tAnodesLbl" value="#{msgs.tAnodes}"></h:outputText>
+						</f:facet>
+						<h:outputText id="tAnodes" value="#{vardocumentsList.tAnodes}"></h:outputText>
+					</p:column>
+					
+					
+						<p:column id="columnEx9" sortBy="tcathProtect">
+						<f:facet name="header">
+							<h:outputText id="tcathProtectLbl1" value="#{msgs.tcathProtect}"></h:outputText>
+						</f:facet>
+						<h:outputText id="tcathProtect" value="#{vardocumentsList.tcathProtect}"></h:outputText>
+					</p:column>
+					
+									
+					<p:column id="columnEx16" sortBy="comment">
+						<f:facet name="header">
+							<h:outputText id="commentLbl" value="#{msgs.comment}"></h:outputText>
+						</f:facet>
+						<h:outputText id="comment" value="#{vardocumentsList.comment}"></h:outputText>
+					</p:column>
+					
+						<f:facet name="footer">							
+							
+						</f:facet>
+					</p:dataTable>
+					<h:messages id="messages1" styleClass="messages"></h:messages>
+</h:form>
+</h:body>
+</html>

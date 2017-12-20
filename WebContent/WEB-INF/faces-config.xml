@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+    version="2.1">
+     <application>
+		<resource-bundle>
+			<base-name>com.wssc.filenet.migration.utils.messages</base-name>
+			<var>msgs</var>
+		</resource-bundle>
+		<locale-config>
+			<default-locale>en</default-locale>
+			<supported-locale>en</supported-locale>
+		</locale-config>
+	</application>
+	
+		<navigation-rule>
+			<from-view-id>/Search/facilitiesQuery.xhtml</from-view-id>
+			<navigation-case>
+				<from-outcome>LISTVIEW</from-outcome>
+				<to-view-id>/Search/facilitiesDrawingsQuery.xhtml</to-view-id>
+				<redirect />
+			</navigation-case>
+			<navigation-case>
+				<from-outcome>SHOWDOC</from-outcome>
+				<to-view-id>/Search/faclityDrawing.xhtml</to-view-id>
+			</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+			<from-view-id>/Search/SearchFacility.xhtml</from-view-id>
+			<navigation-case>
+				<from-outcome>LISTVIEW</from-outcome>
+				<to-view-id>/Search/facilitiesDrawingsQueryInternal.xhtml</to-view-id>
+				<redirect />
+			</navigation-case>
+			<navigation-case>
+				<from-outcome>SHOWDOC</from-outcome>
+				<to-view-id>/Search/facilitiesQueryInternal.xhtml</to-view-id>
+			</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/Search/facilitiesDrawingsQueryInternal.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>BACK</from-outcome>
+			<to-view-id>/Search/SearchFacility.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/Search/facilitiesQueryInternal.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>BACK</from-outcome>
+			<to-view-id>/Search/SearchFacility.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	<navigation-rule>
+		<from-view-id>/testStation/testStationQuery.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>SHOWDOC</from-outcome>
+			<to-view-id>/testStation/testStationDrawing.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+				<from-outcome>LISTVIEW</from-outcome>
+				<to-view-id>/testStation/testStationDrawingsQuery.xhtml</to-view-id>
+				<redirect />
+			</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/testStation/testStationDrawingsQueryInternal.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>BACK</from-outcome>
+			<to-view-id>/testStation/SearchTestStation.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/testStation/testStationQueryInternal.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>BACK</from-outcome>
+			<to-view-id>/testStation/SearchTestStation.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>	/testStation/SearchTestStation.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>SHOWDOC</from-outcome>
+			<to-view-id>/testStation/testStationQueryInternal.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/testStation/testStationQueryInternal.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>BACK</from-outcome>
+			<to-view-id>/testStation/testStationDrawingsQueryInternal.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- No navigation case match for viewId /Search/SearchFacility.xhtml, action #{documentsBean.clearSearchFields} and outcome SUCCESS -->
+	<navigation-rule>
+		<from-view-id>/Search/SearchFacility.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>SUCCESS</from-outcome>
+			<to-view-id>/Search/SearchFacility.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+			<from-view-id>/pc/getPC.xhtml</from-view-id>
+			<navigation-case>
+				<from-outcome>LISTVIEW</from-outcome>
+				<to-view-id>/pc/pcDrawingsQuery.xhtml</to-view-id>
+				<redirect />
+			</navigation-case>
+			<navigation-case>
+				<from-outcome>SHOWDOC</from-outcome>
+				<to-view-id>/pc/pcDrawing.xhtml</to-view-id>
+			</navigation-case>
+	</navigation-rule>
+	
+	<factory>
+              <exception-handler-factory>
+                      com.wssc.filenet.migration.utils.ViewExpiredExceptionExceptionHandlerFactory
+              </exception-handler-factory>
+       </factory>
+
+</faces-config>
